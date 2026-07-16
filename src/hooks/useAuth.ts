@@ -8,7 +8,7 @@ export const useAuth = () => {
   const login = async (email: string, pass: string): Promise<boolean> => {
     setLoading(true);
     try {
-      const response = await fetch('https://hospital-uta-backend-production.up.railway.app/auth/login', {
+      const response = await fetch('https://hospital-uta-backend.onrender.com/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: pass }),

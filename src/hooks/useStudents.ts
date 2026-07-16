@@ -16,7 +16,7 @@ export const useStudents = () => {
   const fetchAlumnosSystem = async () => {
     setLoadingStudents(true); 
     try {
-      const res = await fetch('https://hospital-uta-backend-production.up.railway.app/students', {
+      const res = await fetch('https://hospital-uta-backend.onrender.com/students', {
         headers: getHeaders()
       });
       const data = await res.json();
@@ -35,8 +35,8 @@ export const useStudents = () => {
   const updateAlumnoData = async (id: string, nombres: string, apellidos: string, semestre: string, paralelo: string) => {
     setLoadingStudents(true);
     try {
-      // 💻 CAMBIADO A LOCALHOST PARA PRUEBAS
-      const res = await fetch(`https://hospital-uta-backend-production.up.railway.app/students/${id}`, {
+
+      const res = await fetch(`https://hospital-uta-backend.onrender.com/students/${id}`, {
         method: 'PUT',
         headers: getHeaders(),
         body: JSON.stringify({ nombres, apellidos, semestre, paralelo })
@@ -56,8 +56,8 @@ export const useStudents = () => {
   const deleteAlumnoSystem = async (id: string) => {
     setLoadingStudents(true); // 🎛️ OPTIMIZADO: Muestra estado de carga durante el borrado
     try {
-      // 💻 CAMBIADO A LOCALHOST PARA PRUEBAS
-      const res = await fetch(`https://hospital-uta-backend-production.up.railway.app/students/${id}`, {
+      
+      const res = await fetch(`https://hospital-uta-backend.onrender.com/students/${id}`, {
         method: 'DELETE',
         headers: getHeaders()
       });

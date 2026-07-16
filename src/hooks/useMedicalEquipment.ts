@@ -16,7 +16,7 @@ export const useMedicalEquipment = () => {
   const fetchEquipmentSystem = async () => {
     setLoadingEquipment(true);
     try {
-      const res = await fetch('https://hospital-uta-backend-production.up.railway.app/equipment', { 
+      const res = await fetch('https://hospital-uta-backend.onrender.com/equipment', { 
         headers: getHeaders() 
       });
       return await res.json();
@@ -31,7 +31,7 @@ export const useMedicalEquipment = () => {
   // 2. CREAR EQUIPO (POST) - Mejorado para interceptar excepciones controladas de BD
   const createEquipmentSystem = async (roomId: number, unityTag: string, name: string, description: string) => {
     try {
-      const res = await fetch('https://hospital-uta-backend-production.up.railway.app/equipment', {
+      const res = await fetch('https://hospital-uta-backend.onrender.com/equipment', {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify({ 
@@ -59,7 +59,7 @@ export const useMedicalEquipment = () => {
   // 3. EDITAR EQUIPO (PUT) - Mejorado para interceptar excepciones controladas de BD
   const updateEquipmentSystem = async (roomId: number, unityTag: string, name: string, description: string) => {
     try {
-      const res = await fetch(`https://hospital-uta-backend-production.up.railway.app/equipment/${unityTag}`, {
+      const res = await fetch(`https://hospital-uta-backend.onrender.com/equipment/${unityTag}`, {
         method: 'PUT',
         headers: getHeaders(),
         body: JSON.stringify({ 
@@ -86,7 +86,7 @@ export const useMedicalEquipment = () => {
   // 4. ELIMINAR EQUIPO (DELETE)
   const deleteEquipmentSystem = async (id: number) => {
     try {
-      const res = await fetch(`https://hospital-uta-backend-production.up.railway.app/equipment/${id}`, { 
+      const res = await fetch(`https://hospital-uta-backend.onrender.com/equipment/${id}`, { 
         method: 'DELETE', 
         headers: getHeaders() 
       });

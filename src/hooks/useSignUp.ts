@@ -8,7 +8,7 @@ export const useSignUp = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('https://hospital-uta-backend-production.up.railway.app/auth/signup', {
+      const response = await fetch('https://hospital-uta-backend.onrender.com/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

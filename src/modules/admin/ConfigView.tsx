@@ -36,6 +36,7 @@ export const ConfigView = () => {
     searchFields: ['nombre', 'correo', 'estado'], 
   });
 
+
   const handleToggleClick = (id: string, nombre: string, estadoActual: string) => {
     const esActivacion = estadoActual !== 'activo';
 
