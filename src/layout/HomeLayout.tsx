@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Users, Stethoscope, Layout, Layers, LogOut, Settings } from 'lucide-react'; 
+import { Users, Stethoscope, Layout, Layers, LogOut, Settings, FileQuestion } from 'lucide-react'; 
 import { toast } from 'sonner';
 import { Button } from "@/components/ui/button";
 
@@ -74,6 +74,14 @@ const HomeLayout = () => {
             <Layers size={18} /> Equipos Médicos
           </Button>
 
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/dashboard/evaluations')} 
+            className={`w-full justify-start gap-3 py-5 ${currentPath.includes('/evaluations') ? 'bg-[#c29b38] text-white hover:bg-[#aa842f]' : 'text-slate-300 hover:bg-slate-800/50'}`}
+          >
+            <FileQuestion size={18} /> Evaluaciones (VR)
+          </Button>
+
           {/* RENDERIZADO EXCLUSIVO PARA ROL ADMIN */}
           {userLogged.rol === 'ADMIN' && (
             <Button 
@@ -98,6 +106,7 @@ const HomeLayout = () => {
               {currentPath.includes('/students') && 'Gestión de Estudiantes'}
               {currentPath.includes('/rooms') && 'Salas de Simulación'}
               {currentPath.includes('/equipment') && 'Catálogo de Equipos Médicos'}
+              {currentPath.includes('/evaluations') && 'Creador de Evaluaciones'}
               {currentPath.includes('/settings') && 'Configuración de Sistema'}
             </h2>
             <span className="text-[10px] uppercase font-bold text-[#c29b38] tracking-wider -mt-1">Rango: {userLogged.rol}</span>
