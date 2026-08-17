@@ -23,6 +23,12 @@ export default function CreateEvaluation() {
     setQuestions(newQuestions);
   };
 
+  const handleRemoveQuestion = (index: number) => {
+    if (questions.length === 1) return; // Prevent removing the last question
+    const newQuestions = questions.filter((_, i) => i !== index);
+    setQuestions(newQuestions);
+  };
+
   const handleOptionChange = (qIndex: number, optIndex: number, value: string) => {
     const newQuestions = [...questions];
     newQuestions[qIndex].options[optIndex] = value;
@@ -88,7 +94,18 @@ export default function CreateEvaluation() {
         <div className="space-y-8">
           {questions.map((q, qIndex) => (
             <div key={qIndex} className="p-4 border rounded-lg bg-gray-50">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Pregunta {qIndex + 1}</h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-medium text-gray-900">Pregunta {qIndex + 1}</h3>
+                {questions.length > 1 && (
+                  <button 
+                    type="button" 
+                    onClick={() => handleRemoveQuestion(qIndex)}
+                    className="text-red-500 hover:text-red-700 text-sm font-semibold"
+                  >
+                    Eliminar
+                  </button>
+                )}
+              </div>
               
               <div className="space-y-4">
                 <div>
