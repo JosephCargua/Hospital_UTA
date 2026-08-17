@@ -12,6 +12,7 @@ import { EquipmentView } from './modules/equipments/EquipmentView';
 import { Toaster } from 'sonner'; 
 import ProtectedRoute from '@/components/routes/ProtectedRoute';
 import { ConfigView } from './modules/admin/ConfigView';
+import CreateEvaluation from './modules/evaluations/CreateEvaluation';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path="rooms" element={<RoomsView />} />
             <Route path="equipment" element={<EquipmentView />} />
             <Route path="settings" element={<ConfigView />} />
+            <Route path="evaluations" element={<CreateEvaluation />} />
           </Route>
         </Route>
 
