@@ -53,7 +53,7 @@ export default function CreateEvaluation() {
     const token = localStorage.getItem('token'); // Asume que guardas el JWT aquí
     
     try {
-      const response = await fetch('http://localhost:3000/evaluations/create', {
+      const response = await fetch('https://hospital-uta-backend-fu3b.onrender.com/evaluations/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

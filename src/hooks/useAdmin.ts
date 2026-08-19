@@ -16,7 +16,7 @@ export const useAdmin = () => {
   const fetchUsuariosSystem = async () => {
     setLoading(true); 
     try {
-      const res = await fetch('https://hospital-uta-backend.onrender.com/admin/usuarios', {
+      const res = await fetch('https://hospital-uta-backend-fu3b.onrender.com/admin/usuarios', {
         headers: getHeaders()
       });
       const data = await res.json();
@@ -35,7 +35,7 @@ export const useAdmin = () => {
   const toggleUserRoleSystem = async (id: string, nuevoRol: string) => {
     setLoading(true); 
     try {
-      const res = await fetch(`https://hospital-uta-backend.onrender.com/admin/usuarios/${id}/toggle-role`, {
+      const res = await fetch(`https://hospital-uta-backend-fu3b.onrender.com/admin/usuarios/${id}/toggle-role`, {
         method: 'PATCH',
         headers: getHeaders(),
         body: JSON.stringify({ nuevoRol })

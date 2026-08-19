@@ -16,7 +16,7 @@ export const useStudents = () => {
   const fetchAlumnosSystem = async () => {
     setLoadingStudents(true); 
     try {
-      const res = await fetch('https://hospital-uta-backend.onrender.com/students', {
+      const res = await fetch('https://hospital-uta-backend-fu3b.onrender.com/students', {
         headers: getHeaders()
       });
       const data = await res.json();
@@ -36,7 +36,7 @@ export const useStudents = () => {
     setLoadingStudents(true);
     try {
 
-      const res = await fetch(`https://hospital-uta-backend.onrender.com/students/${id}`, {
+      const res = await fetch(`https://hospital-uta-backend-fu3b.onrender.com/students/${id}`, {
         method: 'PUT',
         headers: getHeaders(),
         body: JSON.stringify({ nombres, apellidos, semestre, paralelo })
@@ -57,7 +57,7 @@ export const useStudents = () => {
     setLoadingStudents(true); // 🎛️ OPTIMIZADO: Muestra estado de carga durante el borrado
     try {
       
-      const res = await fetch(`https://hospital-uta-backend.onrender.com/students/${id}`, {
+      const res = await fetch(`https://hospital-uta-backend-fu3b.onrender.com/students/${id}`, {
         method: 'DELETE',
         headers: getHeaders()
       });
