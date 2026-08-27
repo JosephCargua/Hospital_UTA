@@ -93,16 +93,10 @@ export default function CreateEvaluation() {
             <label className="block text-sm font-medium text-gray-700">Semestre</label>
             <select required value={semestre} onChange={e => setSemestre(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border bg-white">
               <option value="" disabled>Seleccionar Semestre</option>
-              <option value="1er">1er</option>
-              <option value="2do">2do</option>
-              <option value="3er">3er</option>
-              <option value="4to">4to</option>
-              <option value="5to">5to</option>
               <option value="6to">6to</option>
               <option value="7mo">7mo</option>
               <option value="8vo">8vo</option>
               <option value="9no">9no</option>
-              <option value="10mo">10mo</option>
             </select>
           </div>
           <div>
@@ -111,10 +105,6 @@ export default function CreateEvaluation() {
               <option value="" disabled>Seleccionar Paralelo</option>
               <option value="A">A</option>
               <option value="B">B</option>
-              <option value="C">C</option>
-              <option value="D">D</option>
-              <option value="E">E</option>
-              <option value="F">F</option>
             </select>
           </div>
         </div>
