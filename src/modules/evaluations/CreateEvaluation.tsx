@@ -93,11 +93,31 @@ export default function CreateEvaluation() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Semestre</label>
-            <input required type="text" value={semestre} onChange={e => setSemestre(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border" placeholder="Ej: Quinto" />
+            <select required value={semestre} onChange={e => setSemestre(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border bg-white">
+              <option value="" disabled>Seleccionar Semestre</option>
+              <option value="Primero">Primero</option>
+              <option value="Segundo">Segundo</option>
+              <option value="Tercero">Tercero</option>
+              <option value="Cuarto">Cuarto</option>
+              <option value="Quinto">Quinto</option>
+              <option value="Sexto">Sexto</option>
+              <option value="Séptimo">Séptimo</option>
+              <option value="Octavo">Octavo</option>
+              <option value="Noveno">Noveno</option>
+              <option value="Décimo">Décimo</option>
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Paralelo</label>
-            <input required type="text" value={paralelo} onChange={e => setParalelo(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border" placeholder="Ej: A" />
+            <select required value={paralelo} onChange={e => setParalelo(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border bg-white">
+              <option value="" disabled>Seleccionar Paralelo</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+              <option value="F">F</option>
+            </select>
           </div>
         </div>
 
