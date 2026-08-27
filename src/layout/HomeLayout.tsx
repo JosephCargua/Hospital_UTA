@@ -106,7 +106,7 @@ const HomeLayout = () => {
               {currentPath.includes('/students') && 'Gestión de Estudiantes'}
               {currentPath.includes('/rooms') && 'Salas de Simulación'}
               {currentPath.includes('/equipment') && 'Catálogo de Equipos Médicos'}
-              {currentPath.includes('/evaluations') && 'Creador de Evaluaciones'}
+              {currentPath.includes('/evaluations') && 'Módulo de Evaluaciones'}
               {currentPath.includes('/settings') && 'Configuración de Sistema'}
             </h2>
             <span className="text-[10px] uppercase font-bold text-[#c29b38] tracking-wider -mt-1">Rango: {userLogged.rol}</span>

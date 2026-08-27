@@ -13,6 +13,8 @@ import { Toaster } from 'sonner';
 import ProtectedRoute from '@/components/routes/ProtectedRoute';
 import { ConfigView } from './modules/admin/ConfigView';
 import CreateEvaluation from './modules/evaluations/CreateEvaluation';
+import ListEvaluations from './modules/evaluations/ListEvaluations';
+import EvaluationDetails from './modules/evaluations/EvaluationDetails';
 
 function App() {
   return (
@@ -38,7 +40,9 @@ function App() {
             <Route path="rooms" element={<RoomsView />} />
             <Route path="equipment" element={<EquipmentView />} />
             <Route path="settings" element={<ConfigView />} />
-            <Route path="evaluations" element={<CreateEvaluation />} />
+            <Route path="evaluations" element={<ListEvaluations />} />
+            <Route path="evaluations/create" element={<CreateEvaluation />} />
+            <Route path="evaluations/:id" element={<EvaluationDetails />} />
           </Route>
         </Route>
 

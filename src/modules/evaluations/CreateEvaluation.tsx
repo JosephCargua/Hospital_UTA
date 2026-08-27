@@ -6,6 +6,8 @@ import React, { useState } from 'react';
 export default function CreateEvaluation() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [semestre, setSemestre] = useState('');
+  const [paralelo, setParalelo] = useState('');
   const [questions, setQuestions] = useState([
     { question_text: '', image_url: '', options: ['', '', '', ''], correct_option_index: 0 }
   ]);
@@ -59,13 +61,15 @@ export default function CreateEvaluation() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ title, description, questions })
+        body: JSON.stringify({ title, description, semestre, paralelo, questions })
       });
 
       if (response.ok) {
         alert('¡Evaluación creada con éxito!');
         setTitle('');
         setDescription('');
+        setSemestre('');
+        setParalelo('');
         setQuestions([{ question_text: '', image_url: '', options: ['', '', '', ''], correct_option_index: 0 }]);
       } else {
         alert('Error al crear la evaluación');
@@ -84,6 +88,17 @@ export default function CreateEvaluation() {
         <div>
           <label className="block text-sm font-medium text-gray-700">Título de la Evaluación</label>
           <input required type="text" value={title} onChange={e => setTitle(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border" placeholder="Ej: Examen de Cardiología" />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Semestre</label>
+            <input required type="text" value={semestre} onChange={e => setSemestre(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border" placeholder="Ej: Quinto" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Paralelo</label>
+            <input required type="text" value={paralelo} onChange={e => setParalelo(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border" placeholder="Ej: A" />
+          </div>
         </div>
 
         <div>
