@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Si usas shadcn o componentes locales, puedes importarlos aquí. 
 // Por ahora usaré Tailwind básico para asegurar compatibilidad.
 
 export default function CreateEvaluation() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [semestre, setSemestre] = useState('');
@@ -66,11 +68,7 @@ export default function CreateEvaluation() {
 
       if (response.ok) {
         alert('¡Evaluación creada con éxito!');
-        setTitle('');
-        setDescription('');
-        setSemestre('');
-        setParalelo('');
-        setQuestions([{ question_text: '', image_url: '', options: ['', '', '', ''], correct_option_index: 0 }]);
+        navigate('/dashboard/evaluations'); // Redirect to list
       } else {
         alert('Error al crear la evaluación');
       }
@@ -95,16 +93,16 @@ export default function CreateEvaluation() {
             <label className="block text-sm font-medium text-gray-700">Semestre</label>
             <select required value={semestre} onChange={e => setSemestre(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border bg-white">
               <option value="" disabled>Seleccionar Semestre</option>
-              <option value="Primero">Primero</option>
-              <option value="Segundo">Segundo</option>
-              <option value="Tercero">Tercero</option>
-              <option value="Cuarto">Cuarto</option>
-              <option value="Quinto">Quinto</option>
-              <option value="Sexto">Sexto</option>
-              <option value="Séptimo">Séptimo</option>
-              <option value="Octavo">Octavo</option>
-              <option value="Noveno">Noveno</option>
-              <option value="Décimo">Décimo</option>
+              <option value="1er">1er</option>
+              <option value="2do">2do</option>
+              <option value="3er">3er</option>
+              <option value="4to">4to</option>
+              <option value="5to">5to</option>
+              <option value="6to">6to</option>
+              <option value="7mo">7mo</option>
+              <option value="8vo">8vo</option>
+              <option value="9no">9no</option>
+              <option value="10mo">10mo</option>
             </select>
           </div>
           <div>
