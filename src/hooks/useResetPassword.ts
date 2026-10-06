@@ -22,7 +22,7 @@ export const useResetPassword = () => {
       }
 
       // Mandamos el accessToken en el Bearer ordinario, y el refreshToken en una cabecera personalizada
-      const response = await fetch('https://hospital-uta-backend.onrender.com/auth/reset-password', {
+      const response = await fetch('https://hospital-uta-backend-fu3b.onrender.com/auth/reset-password', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

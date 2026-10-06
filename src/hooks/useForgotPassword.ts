@@ -8,7 +8,7 @@ export const useForgotPassword = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('https://hospital-uta-backend.onrender.com/auth/forgot-password', {
+      const response = await fetch('https://hospital-uta-backend-fu3b.onrender.com/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

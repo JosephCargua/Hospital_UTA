@@ -13,6 +13,9 @@ import { PatientsView } from './modules/patients/PatientsView';
 import { Toaster } from 'sonner'; 
 import ProtectedRoute from '@/components/routes/ProtectedRoute';
 import { ConfigView } from './modules/admin/ConfigView';
+import CreateEvaluation from './modules/evaluations/CreateEvaluation';
+import ListEvaluations from './modules/evaluations/ListEvaluations';
+import EvaluationDetails from './modules/evaluations/EvaluationDetails';
 
 function App() {
   return (
@@ -38,7 +41,13 @@ function App() {
             <Route path="rooms" element={<RoomsView />} />
             <Route path="equipment" element={<EquipmentView />} />
             <Route path="settings" element={<ConfigView />} />
+<<<<<<< HEAD
             <Route path="patients" element={<PatientsView />} />
+=======
+            <Route path="evaluations" element={<ListEvaluations />} />
+            <Route path="evaluations/create" element={<CreateEvaluation />} />
+            <Route path="evaluations/:id" element={<EvaluationDetails />} />
+>>>>>>> c29dea0efb9825fa5c6e23397260101b813a5e62
           </Route>
         </Route>
 

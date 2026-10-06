@@ -15,7 +15,7 @@ export const useRooms = () => {
   const fetchRoomsSystem = async () => {
     setLoadingRooms(true);
     try {
-      const res = await fetch('https://hospital-uta-backend.onrender.com/rooms', { 
+      const res = await fetch('https://hospital-uta-backend-fu3b.onrender.com/rooms', { 
         headers: getHeaders() 
       });
       return await res.json();
@@ -30,7 +30,7 @@ export const useRooms = () => {
   // 2. CREAR SALA (POST)
   const createRoomSystem = async (name: string, description: string) => {
     try {
-      const res = await fetch('https://hospital-uta-backend.onrender.com/rooms', {
+      const res = await fetch('https://hospital-uta-backend-fu3b.onrender.com/rooms', {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify({ nombre: name, descripcion: description })
@@ -53,7 +53,7 @@ export const useRooms = () => {
   const updateRoomSystem = async (id: any, name: string, description: string) => {
     try {
       const cleanId = Number(id);
-      const res = await fetch(`https://hospital-uta-backend.onrender.com/rooms/${cleanId}`, {
+      const res = await fetch(`https://hospital-uta-backend-fu3b.onrender.com/rooms/${cleanId}`, {
         method: 'PUT',
         headers: getHeaders(),
         body: JSON.stringify({ nombre: name, descripcion: description })
@@ -77,7 +77,7 @@ export const useRooms = () => {
       // 🚀 EXTRACCIÓN INMEDIATA DE SEGURIDAD
       const currentToken = localStorage.getItem('token');
       
-      const res = await fetch(`https://hospital-uta-backend.onrender.com/rooms/${id}`, { 
+      const res = await fetch(`https://hospital-uta-backend-fu3b.onrender.com/rooms/${id}`, { 
         method: 'DELETE', 
         headers: {
           'Content-Type': 'application/json',
