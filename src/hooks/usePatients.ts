@@ -20,6 +20,9 @@ export const usePatients = () => {
       const res = await fetch(API_URL, { 
         headers: getHeaders() 
       });
+      if (!res.ok) {
+        return [];
+      }
       return await res.json();
     } catch (error) {
       console.error('Error fetching patients:', error);
