@@ -9,6 +9,7 @@ import HomeLayout from './layout/HomeLayout';
 import { StudentsView } from './modules/students/StudentsView';
 import { RoomsView } from './modules/rooms/RoomsView';
 import { EquipmentView } from './modules/equipments/EquipmentView';
+import { PatientsView } from './modules/patients/PatientsView';
 import { Toaster } from 'sonner'; 
 import ProtectedRoute from '@/components/routes/ProtectedRoute';
 import { ConfigView } from './modules/admin/ConfigView';
@@ -37,6 +38,7 @@ function App() {
             <Route path="rooms" element={<RoomsView />} />
             <Route path="equipment" element={<EquipmentView />} />
             <Route path="settings" element={<ConfigView />} />
+            <Route path="patients" element={<PatientsView />} />
           </Route>
         </Route>
 

@@ -74,7 +74,6 @@ const HomeLayout = () => {
             <Layers size={18} /> Equipos Médicos
           </Button>
 
-          {/* RENDERIZADO EXCLUSIVO PARA ROL ADMIN */}
           {userLogged.rol === 'ADMIN' && (
             <Button 
               variant="ghost" 
@@ -84,6 +83,14 @@ const HomeLayout = () => {
               <Settings size={18} /> Configuración
             </Button>
           )}
+
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/dashboard/patients')} 
+            className={`w-full justify-start gap-3 py-5 ${currentPath.includes('/patients') ? 'bg-[#c29b38] text-white hover:bg-[#aa842f]' : 'text-slate-300 hover:bg-slate-800/50'}`}
+          >
+            <Users size={18} /> Pacientes
+          </Button>
         </nav>
         <div className="p-4 border-t border-slate-800/60">
           <Button variant="ghost" onClick={handleLogout} className="w-full justify-start gap-3 text-red-400 font-semibold transition-all duration-200 hover:bg-red-700 hover:text-white"><LogOut size={18} /> Cerrar Sesión</Button>
@@ -99,6 +106,7 @@ const HomeLayout = () => {
               {currentPath.includes('/rooms') && 'Salas de Simulación'}
               {currentPath.includes('/equipment') && 'Catálogo de Equipos Médicos'}
               {currentPath.includes('/settings') && 'Configuración de Sistema'}
+              {currentPath.includes('/patients') && 'Gestión de Pacientes'}
             </h2>
             <span className="text-[10px] uppercase font-bold text-[#c29b38] tracking-wider -mt-1">Rango: {userLogged.rol}</span>
           </div>
