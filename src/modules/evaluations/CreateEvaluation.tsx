@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 // Si usas shadcn o componentes locales, puedes importarlos aquí. 
 // Por ahora usaré Tailwind básico para asegurar compatibilidad.
@@ -67,14 +68,14 @@ export default function CreateEvaluation() {
       });
 
       if (response.ok) {
-        alert('¡Evaluación creada con éxito!');
+        toast.success('¡Evaluación creada con éxito!');
         navigate('/dashboard/evaluations'); // Redirect to list
       } else {
-        alert('Error al crear la evaluación');
+        toast.error('Error al crear la evaluación');
       }
     } catch (error) {
       console.error(error);
-      alert('Error de conexión');
+      toast.error('Error de conexión');
     }
   };
 
