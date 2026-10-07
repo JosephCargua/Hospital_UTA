@@ -34,30 +34,39 @@ export default function EvaluationDetails() {
     if (id) fetchDetails();
   }, [id]);
 
-  const handleCloseEvaluation = async () => {
-    if (!confirm("¿Estás seguro de cerrar esta evaluación? Los estudiantes ya no podrán responder.")) return;
-    
-    setClosing(true);
-    const token = localStorage.getItem('token');
-    try {
-      const res = await fetch(`https://hospital-uta-backend-fu3b.onrender.com/evaluations/${id}/close`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+  const handleCloseEvaluation = () => {
+    toast.warning("¿Estás seguro de cerrar esta evaluación? Los estudiantes ya no podrán responder.", {
+      action: {
+        label: 'Cerrar',
+        onClick: async () => {
+          setClosing(true);
+          const token = localStorage.getItem('token');
+          try {
+            const res = await fetch(`https://hospital-uta-backend-fu3b.onrender.com/evaluations/${id}/close`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            });
+            if (res.ok) {
+              toast.success("Evaluación cerrada exitosamente");
+              fetchDetails(); // Recargar datos
+            } else {
+              toast.error("Error al cerrar la evaluación");
+            }
+          } catch (err) {
+            toast.error("Error de red");
+          } finally {
+            setClosing(false);
+          }
         }
-      });
-      if (res.ok) {
-        toast.success("Evaluación cerrada exitosamente");
-        fetchDetails(); // Recargar datos
-      } else {
-        toast.error("Error al cerrar la evaluación");
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => console.log('Cancelado')
       }
-    } catch (err) {
-      toast.error("Error de red");
-    } finally {
-      setClosing(false);
-    }
+    });
   };
 
   const stats = useMemo(() => {
