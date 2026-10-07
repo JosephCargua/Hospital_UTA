@@ -12,7 +12,7 @@ export const usePatients = () => {
     };
   };
 
-  const API_URL = 'https://hospital-uta-backend.onrender.com/patient';
+  const API_URL = 'https://hospital-uta-backend-fu3b.onrender.com/patient';
 
   const fetchPatientsSystem = async () => {
     setLoadingPatients(true);
