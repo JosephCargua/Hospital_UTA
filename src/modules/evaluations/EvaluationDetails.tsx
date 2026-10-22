@@ -69,6 +69,39 @@ export default function EvaluationDetails() {
     });
   };
 
+  const handleDeleteEvaluation = () => {
+    toast.warning(`¿Eliminar la evaluación "${data?.title}"?`, {
+      description: 'Esta acción borrará permanentemente la evaluación y sus calificaciones.',
+      action: {
+        label: 'Eliminar',
+        onClick: async () => {
+          const token = localStorage.getItem('token');
+          try {
+            const res = await fetch(`https://hospital-uta-backend-fu3b.onrender.com/evaluations/${id}`, {
+              method: 'DELETE',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+            if (res.ok) {
+              toast.success("Evaluación eliminada exitosamente");
+              navigate('/dashboard/evaluations');
+            } else {
+              const err = await res.json().catch(() => null);
+              toast.error(err?.message || "Error al eliminar la evaluación");
+            }
+          } catch (err) {
+            toast.error("Error de red al intentar eliminar");
+          }
+        }
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => console.log('Cancelado')
+      }
+    });
+  };
+
   const stats = useMemo(() => {
     if (!data || !data.submissions) return null;
     const scores = data.submissions.map((s: any) => parseFloat(s.score));
@@ -101,15 +134,23 @@ export default function EvaluationDetails() {
           <span className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm ${data.is_active ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-gray-100 text-gray-600 border border-gray-200'}`}>
             {data.is_active ? '🟢 Activa' : '⚪ Finalizada'}
           </span>
-          {data.is_active && (
+          <div className="flex items-center gap-2 mt-1">
+            {data.is_active && (
+              <button 
+                onClick={handleCloseEvaluation}
+                disabled={closing}
+                className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md transition-all active:scale-95 disabled:opacity-50"
+              >
+                {closing ? 'Cerrando...' : 'Cerrar Evaluación'}
+              </button>
+            )}
             <button 
-              onClick={handleCloseEvaluation}
-              disabled={closing}
-              className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm font-semibold shadow-md transition-all active:scale-95 disabled:opacity-50"
+              onClick={handleDeleteEvaluation}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md transition-all active:scale-95"
             >
-              {closing ? 'Cerrando...' : 'Cerrar Evaluación'}
+              Eliminar
             </button>
-          )}
+          </div>
         </div>
       </div>
 
@@ -138,7 +179,7 @@ export default function EvaluationDetails() {
             <div className="flex justify-between items-end mt-2">
               <div>
                 <p className="text-2xl font-bold text-green-600">{stats.approved}</p>
-                <p className="text-xs text-gray-400">Aprobados</p>
+                <p className="text-xs text-gray-400">Estudiantes</p>
               </div>
               <div className="text-right">
                 <p className="text-2xl font-bold text-red-500">{stats.failed}</p>
@@ -150,11 +191,11 @@ export default function EvaluationDetails() {
             <p className="text-gray-500 text-sm font-medium">Participación</p>
             <div className="flex justify-between items-end mt-2">
               <div>
-                <p className="text-2xl font-bold text-gray-800">{stats.total} <span className="text-lg text-gray-400 font-normal">/ {data.total_students || 0}</span></p>
-                <p className="text-xs text-gray-400">Enviados</p>
+                <p className="text-2xl font-bold text-blue-600">{stats.total} / {data.total_students || '?'}</p>
+                <p className="text-xs text-gray-400">Entregaron</p>
               </div>
               <div className="text-right">
-                <p className="text-xl font-semibold text-orange-400">{stats.pending}</p>
+                <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
                 <p className="text-xs text-gray-400">Pendientes</p>
               </div>
             </div>
@@ -162,71 +203,37 @@ export default function EvaluationDetails() {
         </div>
       )}
 
-      {/* METADATA */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex gap-8">
-        <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Semestre</p>
-          <p className="text-lg font-medium text-gray-800">{data.semestre || 'No asignado'}</p>
-        </div>
-        <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Paralelo</p>
-          <p className="text-lg font-medium text-gray-800">{data.paralelo || 'No asignado'}</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* ENVIOS DE ESTUDIANTES */}
-        <div className="lg:col-span-2 space-y-4">
-          <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-            Resultados de Estudiantes
-            <span className="bg-blue-100 text-blue-700 text-xs py-0.5 px-2 rounded-full">{data.submissions?.length || 0}</span>
-          </h2>
-          <div className="bg-white shadow-sm border border-gray-100 rounded-2xl overflow-hidden">
-            <table className="min-w-full divide-y divide-gray-100">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estudiante</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Nota</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Fecha</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 bg-white">
-                {(!data.submissions || data.submissions.length === 0) ? (
-                  <tr>
-                    <td colSpan={3} className="px-6 py-12 text-center text-gray-400 italic">
-                      Aún no hay respuestas registradas para esta evaluación.
-                    </td>
-                  </tr>
-                ) : (
-                  data.submissions.map((sub: any) => {
-                    const isApproved = parseFloat(sub.score) >= 7;
-                    return (
-                      <tr key={sub.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm mr-3">
-                              {sub.usuarios ? sub.usuarios.nombres.charAt(0) : '?'}
-                            </div>
-                            <div className="text-sm font-semibold text-gray-900">
-                              {sub.usuarios ? `${sub.usuarios.nombres} ${sub.usuarios.apellidos}` : 'Desconocido'}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-bold ${isApproved ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                            {sub.score}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {new Date(sub.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+      {/* DETALLES DE PREGUNTAS Y ENTREGAS */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* LISTA DE ENTREGAS */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-gray-800">Estudiantes que completaron</h2>
+          {data.submissions.length === 0 ? (
+            <div className="p-6 bg-white border border-gray-100 rounded-2xl text-center text-gray-400">
+              Aún ningún estudiante ha rendido esta evaluación en VR.
+            </div>
+          ) : (
+            <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+              {data.submissions.map((sub: any) => {
+                const numScore = parseFloat(sub.score);
+                const isApproved = numScore >= 7;
+                return (
+                  <div key={sub.id} className="bg-white border border-gray-100 p-4 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+                    <div>
+                      <p className="font-semibold text-gray-800">{sub.usuarios?.nombres} {sub.usuarios?.apellidos}</p>
+                      <p className="text-xs text-gray-400">Fecha: {new Date(sub.created_at).toLocaleString()}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className={`text-lg font-black ${isApproved ? 'text-green-600' : 'text-red-500'}`}>
+                        {numScore.toFixed(2)}
+                      </span>
+                      <span className="text-xs text-gray-400 block">/ 10</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* PREGUNTAS CONFIGURADAS */}
@@ -249,7 +256,7 @@ export default function EvaluationDetails() {
                         <span className={`mr-2 flex-shrink-0 mt-0.5 ${isCorrect ? 'text-green-500' : 'text-gray-400'}`}>
                           {isCorrect ? '✓' : '•'}
                         </span>
-                        <span className={isCorrect ? 'text-green-800 font-medium' : 'text-gray-600'}>
+                        <span className={isCorrect ? 'font-semibold text-green-900' : 'text-gray-600'}>
                           {opt}
                         </span>
                       </li>
