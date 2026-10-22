@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { Trash2 } from 'lucide-react';
 
 export default function EvaluationDetails() {
   const { id } = useParams();
@@ -146,9 +147,10 @@ export default function EvaluationDetails() {
             )}
             <button 
               onClick={handleDeleteEvaluation}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md transition-all active:scale-95"
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md transition-all active:scale-95 inline-flex items-center gap-1.5"
             >
-              Eliminar
+              <Trash2 size={15} />
+              <span>Eliminar</span>
             </button>
           </div>
         </div>

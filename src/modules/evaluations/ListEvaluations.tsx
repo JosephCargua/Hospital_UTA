@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { Eye, Trash2 } from 'lucide-react';
 
 export default function ListEvaluations() {
   const [evaluations, setEvaluations] = useState<any[]>([]);
@@ -127,19 +128,24 @@ export default function ListEvaluations() {
                       {ev.estado}
                     </span>
                   </td>
-                  <td className="py-4 pl-3 pr-6 text-sm font-medium text-right whitespace-nowrap space-x-3">
-                    <button 
-                      onClick={() => navigate(`/dashboard/evaluations/${ev.id}`)}
-                      className="text-blue-600 hover:text-blue-800 transition-colors"
-                    >
-                      Ver Detalle
-                    </button>
-                    <button 
-                      onClick={() => handleDelete(ev.id, ev.title)}
-                      className="text-red-500 hover:text-red-700 transition-colors"
-                    >
-                      Eliminar
-                    </button>
+                  <td className="py-4 pl-3 pr-6 text-sm font-medium text-right whitespace-nowrap">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <button 
+                        onClick={() => navigate(`/dashboard/evaluations/${ev.id}`)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="Ver Detalle"
+                      >
+                        <Eye size={15} />
+                        <span>Ver Detalle</span>
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(ev.id, ev.title)}
+                        className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Eliminar evaluación"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
