@@ -2,8 +2,54 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-// Si usas shadcn o componentes locales, puedes importarlos aquí. 
-// Por ahora usaré Tailwind básico para asegurar compatibilidad.
+// Función para redimensionar y comprimir la imagen en el navegador
+// Reduce fotos de 5MB-10MB a menos de 100KB preservando nitidez para Web y VR
+const compressImage = (file: File, maxDimension = 1000, quality = 0.75): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    if (!file.type.startsWith('image/')) {
+      reject(new Error('El archivo seleccionado no es una imagen válida.'));
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          } else {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(event.target?.result as string);
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+        // Comprime a formato JPEG con calidad optimizada
+        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressedBase64);
+      };
+      img.onerror = () => reject(new Error('No se pudo procesar la imagen seleccionada.'));
+    };
+    reader.onerror = () => reject(new Error('Error al leer el archivo.'));
+  });
+};
 
 export default function CreateEvaluation() {
   const navigate = useNavigate();
@@ -11,6 +57,7 @@ export default function CreateEvaluation() {
   const [description, setDescription] = useState('');
   const [semestre, setSemestre] = useState('');
   const [paralelo, setParalelo] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [questions, setQuestions] = useState([
     { question_text: '', image_url: '', options: ['', '', '', ''], correct_option_index: 0 }
   ]);
@@ -40,20 +87,26 @@ export default function CreateEvaluation() {
     setQuestions(newQuestions);
   };
 
-  const handleImageUpload = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Guarda la imagen como Base64 para enviarla al backend/Unity
-        handleQuestionChange(index, 'image_url', reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const compressedBase64 = await compressImage(file);
+        handleQuestionChange(index, 'image_url', compressedBase64);
+      } catch (err: any) {
+        console.error(err);
+        toast.error(err.message || 'Error al procesar la imagen');
+      }
     }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    handleQuestionChange(index, 'image_url', '');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
     const token = localStorage.getItem('token'); // Asume que guardas el JWT aquí
     
@@ -71,11 +124,18 @@ export default function CreateEvaluation() {
         toast.success('¡Evaluación creada con éxito!');
         navigate('/dashboard/evaluations'); // Redirect to list
       } else {
-        toast.error('Error al crear la evaluación');
+        const errorData = await response.json().catch(() => null);
+        if (response.status === 413) {
+          toast.error('Las imágenes seleccionadas exceden el límite de tamaño permitido por el servidor (Error 413).');
+        } else {
+          toast.error(errorData?.message || 'Error al crear la evaluación');
+        }
       }
     } catch (error) {
       console.error(error);
-      toast.error('Error de conexión');
+      toast.error('Error de conexión con el servidor');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -139,8 +199,25 @@ export default function CreateEvaluation() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Imagen (Opcional)</label>
-                  <input type="file" accept="image/*" onChange={e => handleImageUpload(qIndex, e)} className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
-                  {q.image_url && <img src={q.image_url} alt="Preview" className="mt-2 h-32 object-contain rounded" />}
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={e => handleImageUpload(qIndex, e)} 
+                    className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
+                  />
+                  {q.image_url && (
+                    <div className="relative inline-block mt-3 border rounded-lg p-1 bg-white shadow-sm">
+                      <img src={q.image_url} alt="Preview" className="h-32 object-contain rounded" />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(qIndex)}
+                        className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow hover:bg-red-700"
+                        title="Eliminar imagen"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -166,13 +243,17 @@ export default function CreateEvaluation() {
           ))}
         </div>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <button type="button" onClick={handleAddQuestion} className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition">
             + Añadir otra pregunta
           </button>
           
-          <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-bold">
-            Guardar Evaluación
+          <button 
+            type="submit" 
+            disabled={isSubmitting}
+            className={`px-6 py-2 rounded text-white font-bold transition ${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+          >
+            {isSubmitting ? 'Guardando...' : 'Guardar Evaluación'}
           </button>
         </div>
       </form>
