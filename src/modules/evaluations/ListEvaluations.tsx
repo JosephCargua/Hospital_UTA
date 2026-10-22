@@ -70,60 +70,73 @@ export default function ListEvaluations() {
   if (loading) return <div className="p-8 text-center text-gray-500 font-semibold animate-pulse">Cargando evaluaciones...</div>;
 
   return (
-    <div className="p-8 max-w-6xl mx-auto bg-white rounded-xl shadow-md space-y-6 mt-10">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Mis Evaluaciones</h1>
+    <div className="p-6 md:p-8 max-w-6xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-100 space-y-6 mt-6">
+      <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800 tracking-tight">Mis Evaluaciones</h1>
+          <p className="text-xs text-gray-500 mt-0.5">Gestión de exámenes y evaluaciones para simuladores VR</p>
+        </div>
         <button 
           onClick={() => navigate('/dashboard/evaluations/create')} 
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm"
+          className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium shadow-sm text-sm"
         >
           + Crear Nueva
         </button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="w-full overflow-hidden rounded-xl border border-gray-100">
+        <table className="w-full divide-y divide-gray-200">
+          <thead className="bg-slate-50/80">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Semestre</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paralelo</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estudiantes</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+              <th className="py-3.5 pl-6 pr-3 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Título</th>
+              <th className="py-3.5 px-3 text-center text-xs font-bold text-slate-700 uppercase tracking-wider w-24">Semestre</th>
+              <th className="py-3.5 px-3 text-center text-xs font-bold text-slate-700 uppercase tracking-wider w-24">Paralelo</th>
+              <th className="py-3.5 px-3 text-center text-xs font-bold text-slate-700 uppercase tracking-wider w-28">Estudiantes</th>
+              <th className="py-3.5 px-3 text-center text-xs font-bold text-slate-700 uppercase tracking-wider w-28">Estado</th>
+              <th className="py-3.5 pl-3 pr-6 text-right text-xs font-bold text-slate-700 uppercase tracking-wider w-44">Acciones</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-gray-100">
             {evaluations.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-6 py-8 text-center text-gray-500">No has creado evaluaciones aún.</td>
+                <td colSpan={6} className="px-6 py-10 text-center text-gray-400 text-sm">
+                  No has creado evaluaciones aún.
+                </td>
               </tr>
             ) : (
               evaluations.map((ev) => (
-                <tr key={ev.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">{ev.title}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ev.semestre || '-'}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ev.paralelo || '-'}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <tr key={ev.id} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="py-4 pl-6 pr-3 text-sm font-semibold text-gray-800 break-words">
+                    {ev.title}
+                  </td>
+                  <td className="py-4 px-3 text-sm text-center text-gray-500 whitespace-nowrap">
+                    {ev.semestre || '-'}
+                  </td>
+                  <td className="py-4 px-3 text-sm text-center text-gray-500 whitespace-nowrap">
+                    {ev.paralelo || '-'}
+                  </td>
+                  <td className="py-4 px-3 text-sm text-center text-gray-500 whitespace-nowrap">
                     {ev.submissions_count} / {ev.total_students > 0 ? ev.total_students : '?'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <td className="py-4 px-3 text-sm text-center whitespace-nowrap">
                     <span className={`px-2.5 py-1 inline-flex text-xs leading-4 font-semibold rounded-full ${
-                      ev.estado === 'Activa' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                      ev.estado === 'Activa' 
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
+                        : 'bg-slate-100 text-slate-700 border border-slate-200'
                     }`}>
                       {ev.estado}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
+                  <td className="py-4 pl-3 pr-6 text-sm font-medium text-right whitespace-nowrap space-x-3">
                     <button 
                       onClick={() => navigate(`/dashboard/evaluations/${ev.id}`)}
-                      className="text-blue-600 hover:text-blue-900 transition-colors"
+                      className="text-blue-600 hover:text-blue-800 transition-colors"
                     >
                       Ver Detalle
                     </button>
                     <button 
                       onClick={() => handleDelete(ev.id, ev.title)}
-                      className="text-red-600 hover:text-red-900 transition-colors"
+                      className="text-red-500 hover:text-red-700 transition-colors"
                     >
                       Eliminar
                     </button>
