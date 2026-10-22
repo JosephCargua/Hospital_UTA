@@ -137,7 +137,6 @@ export default function ListEvaluations() {
           </span>
           <div className="flex items-baseline mt-3">
             <span className="text-3xl font-black text-[#ca8a04]">{estudiantesEvaluados}</span>
-            <span className="text-xs text-slate-400 font-medium ml-2">envíos API</span>
           </div>
         </div>
 
